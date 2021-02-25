@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crud_firestore/item_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -21,7 +22,33 @@ class MainPage extends StatelessWidget {
           children: [
             ListView(
               children: [
-                //// VIEW DATA HERE
+                // Note : 1x
+                // FutureBuilder<QuerySnapshot>(
+                //   builder: ((_, snapsot) {
+                //     if (snapsot.hasData) {
+                //       return Column(
+                //         children: snapsot.data.docs
+                //             .map((e) =>
+                //                 ItemCard(e.data()['name'], e.data()['age']))
+                //             .toList(),
+                //       );
+                //     }
+                //   }),
+                //   future: users.get(),
+                // ),
+                // Note : Syncned
+                StreamBuilder<QuerySnapshot>(
+                    stream: users.snapshots(),
+                    builder: (_, snapsot) {
+                      if (snapsot.hasData) {
+                        return Column(
+                          children: snapsot.data.docs
+                              .map((e) =>
+                                  ItemCard(e.data()['name'], e.data()['age']))
+                              .toList(),
+                        );
+                      }
+                    }),
                 SizedBox(
                   height: 150,
                 )
